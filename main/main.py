@@ -7,6 +7,7 @@ def download_and_install_update_if_available():
 
 
 def start():
+    print("Hello World!")
     pass
     # your custom code goes here. Something like this: ...
     # from main.x import YourProject
