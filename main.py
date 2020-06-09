@@ -12,7 +12,7 @@ def download_and_install_update_if_available():
 
 def start():
     pass
-    main.hello()
+    main = main.Main()
     # your custom code goes here. Something like this: ...
 
 
