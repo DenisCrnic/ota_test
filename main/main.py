@@ -15,10 +15,5 @@ while station.isconnected() == False:
 print('Connection successful')
 print(station.ifconfig())
 
-class Main:
-  def __init__(self):
-    print("HALLO WORLD 3.3")
-    # self.hello()
-
-  # def hello(self):
-  #   print("HELLO WORLD 2.10")
+def hello():
+  print("HELLO WORLD 2.10")

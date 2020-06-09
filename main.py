@@ -1,6 +1,5 @@
 from main import ota_updater
 from main import main
-# import main.main
 
 # from main import main
 
@@ -11,8 +10,7 @@ def download_and_install_update_if_available():
 
 
 def start():
-    pass
-    main = main.Main()
+    main.hello()
     # your custom code goes here. Something like this: ...
 
 
