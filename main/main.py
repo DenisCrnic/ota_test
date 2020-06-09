@@ -17,7 +17,8 @@ print(station.ifconfig())
 
 class Main:
   def __init__(self):
-    self.hello()
+    print("HALLO WORLD 3.3")
+    # self.hello()
 
-  def hello(self):
-    print("HELLO WORLD 2.10")
+  # def hello(self):
+  #   print("HELLO WORLD 2.10")
