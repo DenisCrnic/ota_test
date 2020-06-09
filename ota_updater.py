@@ -36,24 +36,23 @@ class OTAUpdater:
         print('\tLatest version: ', latest_version)
         if latest_version > current_version:
             print('New version available, will download and install on next reboot')
-            try:
-                os.mkdir(self.modulepath('next'))
-            except:
-                print("next folder already exists")
+            os.mkdir(self.modulepath('next'))
             with open(self.modulepath('next/.version_on_reboot'), 'w') as versionfile:
                 versionfile.write(latest_version)
                 versionfile.close()
 
     def download_and_install_update_if_available(self, ssid, password):
-        if 'next' in os.listdir(self.module):
-            print('next directory exists!')
-            if '.version_on_reboot' in os.listdir(self.modulepath('next')):
-                print('.version_on_reboot exists!')
-                latest_version = self.get_version(self.modulepath('next'), '.version_on_reboot')
-                print('New update found: ', latest_version)
-                self._download_and_install_update(latest_version, ssid, password)
-        else:
-            print('No new updates found...')
+        try:
+            if 'next' in os.listdir(self.module):
+                if '.version_on_reboot' in os.listdir(self.modulepath('next')):
+                    latest_version = self.get_version(self.modulepath('next'), '.version_on_reboot')
+                    print('New update found: ', latest_version)
+                    self._download_and_install_update(latest_version, ssid, password)
+            else:
+                print('No new updates found...')
+        except:
+            print("Update already downloaded")
+            pass
 
     def _download_and_install_update(self, latest_version, ssid, password):
         OTAUpdater.using_network(ssid, password)
@@ -102,6 +101,7 @@ class OTAUpdater:
             is_dir = entry[1] == 0x4000
             if is_dir:
                 self.rmtree(directory + '/' + entry[0])
+
             else:
                 os.remove(directory + '/' + entry[0])
         os.rmdir(directory)
@@ -116,13 +116,11 @@ class OTAUpdater:
 
     def get_latest_version(self):
         latest_release = self.http_client.get(self.github_repo + '/releases/latest')
-        print(latest_release.json())
         version = latest_release.json()['tag_name']
         latest_release.close()
         return version
 
     def download_all_files(self, root_url, version):
-        print(root_url, version)
         file_list = self.http_client.get(root_url + '?ref=refs/tags/' + version)
         for file in file_list.json():
             if file['type'] == 'file':
