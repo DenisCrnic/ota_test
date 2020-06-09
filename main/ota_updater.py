@@ -45,8 +45,7 @@ class OTAUpdater:
                 versionfile.write(latest_version)
                 versionfile.close()
                 print("Rebooting")
-                machine.reset()
-                #Reboot here - should work
+                machine.reset() # automatically reboot when finding new version
             
 
     def download_and_install_update_if_available(self, ssid, password):
