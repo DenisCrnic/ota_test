@@ -17,4 +17,4 @@ print('Connection successful')
 print(station.ifconfig())
 
 def hello():
-  print("HELLO WORLD 2.7")
+  print("HELLO WORLD 2.8")
