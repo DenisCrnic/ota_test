@@ -1,4 +1,4 @@
-from ota_updater import OTAUpdater
+from main import ota_updater
 
 import network
 
@@ -15,10 +15,6 @@ while station.isconnected() == False:
 
 print('Connection successful')
 print(station.ifconfig())
-o = OTAUpdater('https://github.com/DenisCrnic/ota_test')
-o.check_for_update_to_install_during_next_reboot()
 
-class Main:
-
-  def __init__(self):
-    print("HELLO WORLD 2.0")
+def hello():
+  print("HELLO WORLD 2.0")

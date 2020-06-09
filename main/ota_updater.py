@@ -36,10 +36,15 @@ class OTAUpdater:
         print('\tLatest version: ', latest_version)
         if latest_version > current_version:
             print('New version available, will download and install on next reboot')
-            os.mkdir(self.modulepath('next'))
+            try:
+                os.mkdir(self.modulepath('next'))
+            except:
+                print("Folder already exists")
+
             with open(self.modulepath('next/.version_on_reboot'), 'w') as versionfile:
                 versionfile.write(latest_version)
                 versionfile.close()
+            
 
     def download_and_install_update_if_available(self, ssid, password):
         try:
