@@ -20,4 +20,4 @@ o = OTAUpdater("https://github.com/DenisCrnic/ota_test/")
 o.download_and_install_update_if_available(ssid, password)
 o.check_for_update_to_install_during_next_reboot()
 
-print("Hello World!")
+print("Hello World! 1.4")

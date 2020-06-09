@@ -102,20 +102,17 @@ class OTAUpdater:
             is_dir = entry[1] == 0x4000
             if is_dir:
                 self.rmtree(directory + '/' + entry[0])
-
             else:
                 os.remove(directory + '/' + entry[0])
         os.rmdir(directory)
 
     def get_version(self, directory, version_file_name='.version'):
-        try:
-            if version_file_name in os.listdir(directory):
-                f = open(directory + '/' + version_file_name)
-                version = f.read()
-                f.close()
-                return version
-        except:
-            return '0.0'
+        if version_file_name in os.listdir(directory):
+            f = open(directory + '/' + version_file_name)
+            version = f.read()
+            f.close()
+            return version
+        return '0.0'
 
     def get_latest_version(self):
         latest_release = self.http_client.get(self.github_repo + '/releases/latest')
@@ -125,6 +122,7 @@ class OTAUpdater:
         return version
 
     def download_all_files(self, root_url, version):
+        print(root_url, version)
         file_list = self.http_client.get(root_url + '?ref=refs/tags/' + version)
         for file in file_list.json():
             if file['type'] == 'file':
