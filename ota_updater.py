@@ -36,7 +36,10 @@ class OTAUpdater:
         print('\tLatest version: ', latest_version)
         if latest_version > current_version:
             print('New version available, will download and install on next reboot')
-            os.mkdir(self.modulepath('next'))
+            try:
+                os.mkdir(self.modulepath('next'))
+            except:
+                print("next folder already exists")
             with open(self.modulepath('next/.version_on_reboot'), 'w') as versionfile:
                 versionfile.write(latest_version)
                 versionfile.close()
@@ -95,7 +98,9 @@ class OTAUpdater:
         return False
 
     def rmtree(self, directory):
-        for entry in os.ilistdir(directory):
+        print("TUKAJ GRE PO ZLU", dir)
+        for entry in os.listdir(directory):
+            print("TUKAJ GRE PO ZLU")
             is_dir = entry[1] == 0x4000
             if is_dir:
                 self.rmtree(directory + '/' + entry[0])
@@ -105,20 +110,24 @@ class OTAUpdater:
         os.rmdir(directory)
 
     def get_version(self, directory, version_file_name='.version'):
-        if version_file_name in os.listdir(directory):
-            f = open(directory + '/' + version_file_name)
-            version = f.read()
-            f.close()
-            return version
-        return '0.0'
+        try:
+            if version_file_name in os.listdir(directory):
+                f = open(directory + '/' + version_file_name)
+                version = f.read()
+                f.close()
+                return version
+        except:
+            return '0.0'
 
     def get_latest_version(self):
         latest_release = self.http_client.get(self.github_repo + '/releases/latest')
+        print(latest_release.json())
         version = latest_release.json()['tag_name']
         latest_release.close()
         return version
 
     def download_all_files(self, root_url, version):
+        print(root_url, version)
         file_list = self.http_client.get(root_url + '?ref=refs/tags/' + version)
         for file in file_list.json():
             if file['type'] == 'file':
