@@ -1,21 +1,23 @@
 from ota_updater import OTAUpdater
+import network
 
-def download_and_install_update_if_available():
-    print("Checking for updates")
-    o = OTAUpdater("https://github.com/DenisCrnic/ota_test/")
-    o.download_and_install_update_if_available('Denis', 'ljubljana')
+ssid = 'Denis'
+password = 'ljubljana'
+
+station = network.WLAN(network.STA_IF)
+
+station.active(True)
+station.connect(ssid, password)
+
+while station.isconnected() == False:
+  pass
+
+print('Connection successful')
+print(station.ifconfig())
 
 
-def start():
-    print("Hello World!")
-    pass
-    # your custom code goes here. Something like this: ...
-    # from main.x import YourProject
-    # project = YourProject()
-    # ...
+o = OTAUpdater("https://github.com/DenisCrnic/ota_test/")
+o.download_and_install_update_if_available(ssid, password)
+o.check_for_update_to_install_during_next_reboot()
 
-def boot():
-    download_and_install_update_if_available()
-    start()
-
-boot()
+print("Hello World! 1.4")

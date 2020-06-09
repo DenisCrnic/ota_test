@@ -98,26 +98,21 @@ class OTAUpdater:
         return False
 
     def rmtree(self, directory):
-        print("TUKAJ GRE PO ZLU", dir)
-        for entry in os.listdir(directory):
-            print("TUKAJ GRE PO ZLU")
+        for entry in os.ilistdir(directory):
             is_dir = entry[1] == 0x4000
             if is_dir:
                 self.rmtree(directory + '/' + entry[0])
-
             else:
                 os.remove(directory + '/' + entry[0])
         os.rmdir(directory)
 
     def get_version(self, directory, version_file_name='.version'):
-        try:
-            if version_file_name in os.listdir(directory):
-                f = open(directory + '/' + version_file_name)
-                version = f.read()
-                f.close()
-                return version
-        except:
-            return '0.0'
+        if version_file_name in os.listdir(directory):
+            f = open(directory + '/' + version_file_name)
+            version = f.read()
+            f.close()
+            return version
+        return '0.0'
 
     def get_latest_version(self):
         latest_release = self.http_client.get(self.github_repo + '/releases/latest')
