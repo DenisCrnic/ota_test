@@ -42,13 +42,17 @@ class OTAUpdater:
                 versionfile.close()
 
     def download_and_install_update_if_available(self, ssid, password):
-        if 'next' in os.listdir(self.module):
-            if '.version_on_reboot' in os.listdir(self.modulepath('next')):
-                latest_version = self.get_version(self.modulepath('next'), '.version_on_reboot')
-                print('New update found: ', latest_version)
-                self._download_and_install_update(latest_version, ssid, password)
-        else:
-            print('No new updates found...')
+        try:
+            if 'next' in os.listdir(self.module):
+                if '.version_on_reboot' in os.listdir(self.modulepath('next')):
+                    latest_version = self.get_version(self.modulepath('next'), '.version_on_reboot')
+                    print('New update found: ', latest_version)
+                    self._download_and_install_update(latest_version, ssid, password)
+            else:
+                print('No new updates found...')
+        except:
+            print("Update already downloaded")
+            pass
 
     def _download_and_install_update(self, latest_version, ssid, password):
         OTAUpdater.using_network(ssid, password)
